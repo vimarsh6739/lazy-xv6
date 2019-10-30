@@ -23,6 +23,8 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int count_virtual_pages(void);
+int count_physical_pages(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

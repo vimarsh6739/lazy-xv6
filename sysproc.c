@@ -89,3 +89,40 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+sys_count_virtual_pages(void)
+{
+  uint vsize;
+  vsize = myproc()->sz;
+  vsize = vsize/PGSIZE;
+  return vsize;
+}
+
+int sys_count_physical_pages(void)
+{
+  struct proc *curproc = myproc();
+  pde_t *pgdir = curproc->pgdir;
+  pde_t *pde;
+  pte_t *pgtab;
+
+  int i;int j;int cnt;cnt=0;
+  for(i=0;i<NPDENTRIES;++i){
+    pde = &pgdir[i];
+
+    if(*pde & PTE_P){
+      if(i==0)
+        cprintf("Directory %d is present\n",i);
+      pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
+      for(j=0;j<NPTENTRIES;++j){
+        if(pgtab[j] & PTE_P){
+          if(i==0)
+            cprintf("Page %d \n",j);
+          cnt++;
+        }
+      }
+    }
+  }
+  //returns count of all current physical pages
+  return cnt;
+}
