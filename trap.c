@@ -36,6 +36,8 @@ idtinit(void)
 void
 trap(struct trapframe *tf)
 {
+  int va;
+  char* mem;
   if(tf->trapno == T_SYSCALL){
     if(myproc()->killed)
       exit();
@@ -77,7 +79,40 @@ trap(struct trapframe *tf)
             cpuid(), tf->cs, tf->eip);
     lapiceoi();
     break;
-
+  
+  case T_PGFLT:
+    //PAGEFAULT: 14 - allocate a new page
+    va = rcr2();
+    struct proc *curproc = myproc();
+    va = PGROUNDDOWN(va);
+    if(va <= curproc->sz){
+      //allocate page corresponding to va
+      //cprintf("Page not allocated at virtual address %d\n",va);
+      mem = kalloc();
+      if(mem == 0){
+        cprintf("allocuvm out of memory\n");
+        //deallocuvm(pgdir, newsz, oldsz);
+        //return 0;
+        myproc()->killed = 1;
+      }else{
+        memset(mem, 0, PGSIZE);
+        if(mappages(curproc->pgdir, (char*)va, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
+          cprintf("allocuvm out of memory (2)\n");
+          //deallocuvm(pgdir, newsz, oldsz);
+          //kfree(mem);
+          myproc()->killed = 1;
+        }
+      }
+    }else{
+      //cprintf("Process size is %d\n",myproc()->sz);
+      //cprintf("Page fault at virtual address %d\n",va);
+      cprintf("pid %d %s: trap %d err %d on cpu %d "
+            "eip 0x%x addr 0x%x--kill proc\n",
+            myproc()->pid, myproc()->name, tf->trapno,
+            tf->err, cpuid(), tf->eip, rcr2());
+      myproc()->killed = 1;
+    }
+    break;
   //PAGEBREAK: 13
   default:
     if(myproc() == 0 || (tf->cs&3) == 0){

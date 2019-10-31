@@ -47,12 +47,13 @@ sys_sbrk(void)
 {
   int addr;
   int n;
-  //have to increase proc size by n bytes
+  //Have to increase proc size by n bytes
   if(argint(0, &n) < 0)
     return -1;
-  addr = myproc()->sz + n;
-  myproc()->sz = addr;
-
+  addr = myproc()->sz;
+  myproc()->sz = addr + n;
+  //cprintf("Proc size was %d and now is %d\n",addr-n,myproc()->sz);
+  //if n<0 then simply deallocate 
   //if(growproc(n) < 0)
   //  return -1;
   return addr;
