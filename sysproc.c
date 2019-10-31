@@ -106,20 +106,19 @@ int sys_count_physical_pages(void)
   pde_t *pde;
   pte_t *pgtab;
 
-  int i;
   int j;
-  int cnt;cnt=0;
-  for(i=0;i<NPDENTRIES;++i){
-    pde = &pgdir[i];
-    if(*pde & PTE_P){
-      pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
-      for(j=0;j<NPTENTRIES;++j){
-        if(*(pgtab+j) & PTE_P){
-          cnt++;
-        }
+  int cnt;
+  cnt=0;
+  pde = &pgdir[0];
+  if(*pde & PTE_P){
+    pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
+    for(j=0;j<NPTENTRIES;++j){
+      if(*(pgtab+j) & PTE_P){
+        cnt++;
       }
-    }  
-  }
+    }
+  }  
+
   
 
   //pde_t *pde;
