@@ -106,23 +106,40 @@ int sys_count_physical_pages(void)
   pde_t *pde;
   pte_t *pgtab;
 
-  int i;int j;int cnt;cnt=0;
+  int i;
+  int j;
+  int cnt;cnt=0;
   for(i=0;i<NPDENTRIES;++i){
     pde = &pgdir[i];
-
     if(*pde & PTE_P){
-      if(i==0)
-        cprintf("Directory %d is present\n",i);
       pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
       for(j=0;j<NPTENTRIES;++j){
-        if(pgtab[j] & PTE_P){
-          if(i==0)
-            cprintf("Page %d \n",j);
+        if(*(pgtab+j) & PTE_P){
           cnt++;
         }
       }
-    }
+    }  
   }
+  
+
+  //pde_t *pde;
+  //pte_t *pgtab;
+  //cprintf("Directory is %p",*pg_dir);
+  //int i;//int j;//int cnt;cnt=0;
+
+  //for(i=0;i<1;++i){
+    //pde = &pgdir[i];
+    //if(dir_base[i] & (PTE_P | PTE_U) ){
+      // cprintf("Directory %d --> %p --> ",i,dir_base[i]);
+      // pgtab = (pte_t*)P2V(PTE_ADDR(dir_base[i]));
+      //for(j=0;j<NPTENTRIES;++j){
+      //  if(pgtab[j] & (PTE_P|PTE_U)){
+      //    cnt++;
+      //  }
+      // cprintf("%p \n",*pgtab);
+      //}
+    //}
+  //}
   //returns count of all current physical pages
   return cnt;
 }
