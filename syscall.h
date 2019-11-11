@@ -22,3 +22,4 @@
 #define SYS_close  21
 #define SYS_count_virtual_pages 22
 #define SYS_count_physical_pages 23
+#define SYS_get_ticks 24
