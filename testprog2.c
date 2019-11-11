@@ -5,14 +5,15 @@
 int main(void)
 {
     uint x = uptime();
-    char* a = malloc(4096*1024*10);
-    uint y = uptime();
-    printf(1,"Time taken to allocate the array is %d\n",y-x);
- 	
-    x = uptime();
-    a[45000] = 65;
+    char* a = malloc(1024*1024*10);
+    a[0] = 1;
+    int i;
+    uint y = 1024*1024*10;
+    for(i = 1024;i < y;i+=1024)
+    {
+    	a[i] = 1;
+    }
     y = uptime();
-    printf(1,"Time taken to access Page 11 is %d\n",y-x);
-
-   exit();
+    printf(1,"The time taken for 10240 page accesses in the JIT scheme is %d\n",y-x);
+    exit();
 }
