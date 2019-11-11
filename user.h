@@ -25,7 +25,6 @@ int sleep(int);
 int uptime(void);
 int count_virtual_pages(void);
 int count_physical_pages(void);
-int get_ticks(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

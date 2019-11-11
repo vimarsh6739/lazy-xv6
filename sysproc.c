@@ -123,7 +123,3 @@ int sys_count_physical_pages(void)
   }
   return cnt;
 }
-int sys_get_ticks(void)
-{
-  return ticks;
-}
