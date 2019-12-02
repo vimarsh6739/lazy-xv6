@@ -13,6 +13,6 @@ main(int argc, char *argv[])
 
   int j;j = count_physical_pages();
   printf(1, "Count of virtual pages is %d\n", i);
-  printf(1, "Count of physical pages is %d\n", j);
+  printf(1, "Count of physical pages is %d\n", j-65536);
   exit();
 }

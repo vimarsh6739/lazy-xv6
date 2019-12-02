@@ -6,6 +6,9 @@ int main(void)
 {
     uint x = uptime();
     char* a = malloc(1024*1024*10);
+    uint z = uptime();
+    printf(1,"The time taken to allocate memory is %d\n",z-x);
+    x = uptime();
     a[0] = 1;
     int i;
     uint y = 1024*1024*10;
