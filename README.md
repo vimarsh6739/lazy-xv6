@@ -15,4 +15,5 @@ In a nutshell, we split the project is divided into 3 parts:
 3. Handling the eventual page-faults in `trap.c` by allocating memory on encountering trap 13 (or `T_PGFLT`).
 The location where the page fault occured is stored in the `rcr2` register.  
 
-The programs can be benchmarked using the syscalls defined in 1. The programs `testprog.c` and `testprog2.c` attempt to do the same.
+The programs can be benchmarked using the syscalls defined in 1.  
+The programs `testprog.c` and `testprog2.c` attempt to do the same.
